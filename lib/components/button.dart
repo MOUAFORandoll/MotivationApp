@@ -1,0 +1,67 @@
+import 'package:Motivation/styles/colorApp.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart'; 
+
+class Button extends StatelessWidget {
+  Button(
+      {this.title,
+      this.itemColor,
+      this.loaderColor,
+      this.textColor,
+      this.onTap,
+      this.state,
+      this.borderColor,
+      this.margin,
+      this.height = 0,
+      this.width = 0,
+      this.enabled = false});
+  var onTap;
+  var itemColor;
+  var loaderColor;
+  var textColor;
+  var title;
+  var state;
+  var borderColor;
+  var enabled;
+  double height;
+  double width;
+  var margin;
+  @override
+  Widget build(BuildContext context) {
+    return (state == true && state != null
+        ? Container(
+            padding: EdgeInsets.only(top: 7, left: 10, right: 10, bottom: 7),
+            child: SpinKitCircle(
+              color: Colors.blue,
+              size: 40,
+            ))
+        : Container(
+            height: height,
+            width: width,
+            margin: margin,
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(10),
+            decoration: new BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: borderColor == null
+                  ? Border.all(color: Colors.black38)
+                  : Border.all(color: borderColor),
+              color: (enabled)
+                  ? (itemColor == null)
+                      ? ColorsApp.blue
+                      : itemColor
+                  : Colors.grey,
+            ),
+            child: InkWell(
+                onTap: onTap,
+                child: Center(
+                    child: Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: textColor),
+                ))),
+          ));
+  }
+}
