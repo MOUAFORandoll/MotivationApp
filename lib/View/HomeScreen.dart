@@ -2,6 +2,7 @@ import 'package:Motivation/View/Category/CategoryScreen.dart';
 import 'package:Motivation/View/NewsScreen.dart';
 import 'package:Motivation/View/NotificationsScreen.dart';
 import 'package:Motivation/View/SettingScreen.dart';
+import 'package:Motivation/View/UsersMange/profilScreen.dart';
 import 'package:Motivation/View/messages/Listmessage.dart';
 import 'package:Motivation/View/messages/Message.dart';
 import 'package:Motivation/styles/colorApp.dart';
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   int item = 0;
-  Widget contenu = NewsScreenScreen();
+  Widget contenu =   NewsScreenScreen();
 
   @override
   Widget build(BuildContext context) {

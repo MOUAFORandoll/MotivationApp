@@ -1,8 +1,11 @@
 import 'package:Motivation/components/conversationsComponent.dart';
 import 'package:Motivation/components/messageComponent.dart';
+import 'package:Motivation/components/motivationComponent.dart';
 import 'package:Motivation/styles/colorApp.dart';
+import 'package:Motivation/viewmodels/users_list_view_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PublicationsByCategory extends StatefulWidget {
   PublicationsByCategory({this.category});
@@ -13,6 +16,11 @@ class PublicationsByCategory extends StatefulWidget {
 }
 
 class _PublicationsByCategoryState extends State<PublicationsByCategory> {
+  @override
+  void initState() {
+    Provider.of<UserListViewModel>(context, listen: false).getAllUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,12 +51,12 @@ class _PublicationsByCategoryState extends State<PublicationsByCategory> {
       ),
       Expanded(
         child: Container(
-            margin: EdgeInsets.only(left: 10, right: 10),
+            margin: EdgeInsets.only(left: 10, right: 10, top: 8),
             child: (ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
-                    child: ConversationsComponent(),
+                    child: MotivationComponent(),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

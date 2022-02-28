@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 route(context, widget, {bool close = false}) {
@@ -14,7 +13,6 @@ final String userInfo = "userInfo";
 final String firstKey = "firstKey";
 
 class Variable {
-  static String ?token;
+  static String? token;
   static String? refreshToken;
 }
- 

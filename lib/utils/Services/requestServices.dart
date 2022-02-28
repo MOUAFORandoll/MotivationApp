@@ -1,19 +1,73 @@
 import 'dart:convert';
 import 'dart:io';
-  
+
+import 'package:Motivation/model/data/AbonnementModel.dart';
+import 'package:Motivation/model/data/CommentModel%20.dart';
+import 'package:Motivation/model/data/LikeModel.dart';
+import 'package:Motivation/model/data/MessageModel.dart';
+import 'package:Motivation/model/data/PartageModel.dart';
+import 'package:Motivation/model/data/PublicationModel.dart';
+import 'package:Motivation/model/data/SaveModel.dart';
+import 'package:Motivation/model/data/TypePublicationModel.dart';
+import 'package:Motivation/model/data/UserModel.dart';
 import 'package:Motivation/utils/api/apiUrl.dart';
 import 'package:Motivation/utils/provider/refresh_token.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get_storage/get_storage.dart';
-import 'package:http_parser/http_parser.dart'; 
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 
 class ApiService {
+  static Dio dio = Dio(
+    BaseOptions(baseUrl: ApiUrl.baseUrl, headers: {
+      "Accept": "application/json",
+    }),
+  );
   GetStorage box = GetStorage();
-  var api = ApiService();
+/*   var api = ApiService(); */
+
+  static getPublications() async {
+    // var dio = await CustomDio().getApiClient();
+
+    try {
+      List<PublicationModel> responseWModel;
+      Response response = await dio.get("/api/publications");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        responseWModel = (response.data as List)
+            .map((e) => PublicationModel.fromJson(e))
+            .toList();
+      } else {
+        responseWModel = [];
+      }
+
+      return responseWModel;
+    } on SocketException {
+      throw Exception("No Internet Connexion");
+    }
+  }
+
+  static getUsers() async {
+    // var dio = await CustomDio().getApiClient();
+
+    try {
+      List<UserModel> responseWModel;
+      Response response = await dio.get("/api/users");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        responseWModel =
+            (response.data as List).map((e) => UserModel.fromJson(e)).toList();
+      } else {
+        responseWModel = [];
+      }
+
+      return responseWModel;
+    } on SocketException {
+      throw Exception("No Internet Connexion");
+    }
+  }
+
   static getDatas(String url, var eltmodel) async {
     var dio = await CustomDio().getApiClient();
 
@@ -29,30 +83,32 @@ class ApiService {
   static checkResponseType(var model) {
     switch (model) {
 
-      // ///case value is the element type with return in the selected model
-      // case DigesteurModel:
+      ///case value is the element type with return in the selected model
+      case AbonnementModel:
 
-      //   ///the return of selected model data who user get
-      //   return DigesteurModel;
+        ///the return of selected model data who user get
+        return AbonnementModel;
 
-      // case DigestModel:
-      //   return DigestModel;
-      // case BibiothequeModels:
-      //   return BibiothequeModels;
-      // case AbonnementModel:
-      //   return AbonnementModel;
-      // case AbonnementUserModel:
-      //   return AbonnementUserModel;
-      // case AdresseModel:
-      //   return AdresseModel;
-      // case CategoriesDigestModel:
-      //   return CategoriesDigestModel;
-      // case DigestSellerModel:
-      //   return DigestSellerModel;
-      // case FavoriteDigestModel:
-      //   return FavoriteDigestModel;
+      case CommentModel:
+        return CommentModel;
+      case LikesModel:
+        return LikesModel;
+      case AbonnementModel:
+        return AbonnementModel;
+      case MessageModel:
+        return MessageModel;
+      case PartageModel:
+        return PartageModel;
+      case PublicationModel:
+        return PublicationModel;
+      case SaveModel:
+        return SaveModel;
+      case TypePublicationModel:
+        return TypePublicationModel;
+      case UserModel:
+        return UserModel;
 
-      // default:
+      default:
     }
   }
 
@@ -61,9 +117,9 @@ class ApiService {
 
     switch (response.statusCode) {
       case 200:
-        dynamic responseWModel =
-            (response.data as List).map((e) => model.fromJson(e)).toList();
-        return responseWModel;
+      // dynamic responseWModel =
+      //     (response.data as List).map((e) => model.fromJson(e)).toList();
+      // return responseWModel;
       case 201:
         dynamic responseWModel =
             (response.data as List).map((e) => model.fromJson(e)).toList();
@@ -80,7 +136,7 @@ class ApiService {
     }
   }
 
-  getData(String url, var model) async {
+  getOne(String url, var model) async {
     var dio = await CustomDio().getApiClient();
 
     try {
@@ -98,8 +154,6 @@ class ApiService {
     var model = checkResponseType(eltmodel);
     switch (response.statusCode) {
       case 200:
-        dynamic responseWModel = model.fromJson((response.data));
-        return responseWModel;
       case 201:
         dynamic responseWModel = model.fromJson((response.data));
         return responseWModel;
@@ -116,7 +170,7 @@ class ApiService {
   }
 
   postData(String url, var data) async {
-    var dio = await CustomDio().getApiClient();
+    // var dio = await CustomDio().getApiClient();
 
     try {
       print("debut du poast de donnee dont les datas sont $data");
@@ -133,8 +187,9 @@ class ApiService {
 
   returnResponsePost(Response response) {
     switch (response.statusCode) {
+      case 200:
       case 201:
-        dynamic responseWModel = jsonDecode(response.data);
+        dynamic responseWModel = response.data;
         return responseWModel;
       case 400:
         throw Exception(response.data.toString());
@@ -148,12 +203,16 @@ class ApiService {
     }
   }
 
-  loginUser(String url, var data) async {
-    var dio = await CustomDio().getApiClient();
+  loginUser(var data) async {
+    Dio _dio = Dio(
+      BaseOptions(baseUrl: ApiUrl.baseUrl, headers: {
+        "Accept": "application/json",
+      }),
+    );
     try {
       print("debut du login de l'utilisateur dont les datas sont $data");
 
-      Response response = await dio.post("$url", data: data);
+      Response response = await _dio.post("/api/logins", data: data);
       print(
           "fin du login de l'utilisateur de donnees $data statut code: ${response.statusCode}");
 
@@ -198,12 +257,12 @@ class ApiService {
         return CustomDio().refreshToken();
       case 500:
         throw Exception("Internal server problems try later");
-        break;
+
       default:
     }
   }
 
-  Future downlaodAndSaveDigestToStorage(
+  Future downlaodAndSaveToStorage(
       context, String urlPath, String fileName, String finalPath) async {
     Directory d = Directory(finalPath);
 
@@ -227,15 +286,13 @@ class ApiService {
   }
 
   static verifconnexion(context) async {
-   
-      //  print("You don't have network connection!");
-      return Toast.show(
-        "Verifiez votre connexion internet",
-        context,
-        backgroundColor: Colors.red[300],
-        duration: 4,
-        gravity: Toast.BOTTOM,
-      );
-  
+    //  print("You don't have network connection!");
+    return Toast.show(
+      "Verifiez votre connexion internet",
+      context,
+      backgroundColor: Colors.red[300],
+      duration: 4,
+      gravity: Toast.BOTTOM,
+    );
   }
 }

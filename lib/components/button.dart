@@ -1,6 +1,6 @@
 import 'package:Motivation/styles/colorApp.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart'; 
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Button extends StatelessWidget {
   Button(
@@ -48,7 +48,7 @@ class Button extends StatelessWidget {
                   : Border.all(color: borderColor),
               color: (enabled)
                   ? (itemColor == null)
-                      ? ColorsApp.blue
+                      ? ColorsApp.skyBlue
                       : itemColor
                   : Colors.grey,
             ),
@@ -61,6 +61,53 @@ class Button extends StatelessWidget {
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                       color: textColor),
+                ))),
+          ));
+  }
+}
+
+class Button2 extends StatelessWidget {
+  Button2(
+      {this.icon,
+      this.itemColor,
+      this.loaderColor,
+      this.textColor,
+      this.onTap,
+      this.state,
+      this.borderColor,
+      this.margin,
+      this.height = 0,
+      this.width = 0,
+      this.enabled = false});
+  var onTap;
+  var itemColor;
+  var loaderColor;
+  var textColor;
+  var icon;
+  var state;
+  var borderColor;
+  var enabled;
+  double height;
+  double width;
+  var margin;
+  @override
+  Widget build(BuildContext context) {
+    return (state == true && state != null
+        ? Container(
+            padding: EdgeInsets.only(top: 7, left: 10, right: 10, bottom: 7),
+            child: SpinKitCircle(
+              color: Colors.blue,
+              size: 40,
+            ))
+        : Container(
+            padding: EdgeInsets.only(right: 10, bottom: 7),
+            child: InkWell(
+                onTap: onTap,
+                child: Center(
+                    child: Icon(
+                  icon,
+                  color: ColorsApp.skyBlue,
+                  size: 35,
                 ))),
           ));
   }
