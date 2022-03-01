@@ -11,6 +11,7 @@ import 'package:Motivation/model/data/SaveModel.dart';
 import 'package:Motivation/model/data/TypePublicationModel.dart';
 import 'package:Motivation/model/data/UserModel.dart';
 import 'package:Motivation/utils/api/apiUrl.dart';
+import 'package:Motivation/utils/functions/showToast.dart';
 import 'package:Motivation/utils/provider/refresh_token.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,71 @@ class ApiService {
     try {
       List<PublicationModel> responseWModel;
       Response response = await dio.get("/api/publications");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        responseWModel = (response.data as List)
+            .map((e) => PublicationModel.fromJson(e))
+            .toList();
+      } else {
+        responseWModel = [];
+      }
+
+      return responseWModel;
+    } on SocketException {
+      throw Exception("No Internet Connexion");
+    }
+  }
+
+  static getPublicationsSave() async {
+    // var dio = await CustomDio().getApiClient();
+
+    try {
+      List<SaveModel> responseWModel;
+      Response response = await dio.get("/api/saves?user=1");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        responseWModel =
+            (response.data as List).map((e) => SaveModel.fromJson(e)).toList();
+      } else {
+        responseWModel = [];
+      }
+
+      return responseWModel;
+    } on SocketException {
+      throw Exception("No Internet Connexion");
+    }
+  }
+
+  static getExist(url, context) async {
+    // var dio = await CustomDio().getApiClient();
+    int exist = 0;
+    try {
+      List<SaveModel> responseWModel;
+      Response response = await dio.get(url);
+      print("data exist*****************${response.data}");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.data.length == 0) {
+          exist = 0; // n'existe pas
+        } else {
+          exist = 1; // n'existe
+        }
+      } else {
+        exist = 2; // une erreur est survenue
+      }
+
+      return exist;
+    } on SocketException {
+      toastShow("Une erreur est survenue... \n Veillez recommencer",
+          Colors.blueGrey, context);
+
+      throw Exception("No Internet Connexion");
+    }
+  }
+
+  static getFavoritePublications() async {
+    // var dio = await CustomDio().getApiClient();
+
+    try {
+      List<PublicationModel> responseWModel;
+      Response response = await dio.get("/api/favories?user=1");
       if (response.statusCode == 200 || response.statusCode == 201) {
         responseWModel = (response.data as List)
             .map((e) => PublicationModel.fromJson(e))

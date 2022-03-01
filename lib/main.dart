@@ -1,4 +1,8 @@
-import 'package:Motivation/View/HomeScreen.dart';
+import 'package:Motivation/View/FirstScreen.dart';
+import 'package:Motivation/View/UsersMange/LoginScreen.dart';
+import 'package:Motivation/View/UsersMange/RegisterScreen.dart';
+import 'package:Motivation/ViewModels/Favoritepublications_list_view_model.dart';
+import 'package:Motivation/ViewModels/SavePublications_list_view_model.dart';
 import 'package:Motivation/viewmodels/publications_list_view_model.dart';
 import 'package:Motivation/viewmodels/users_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +25,10 @@ class MyApp extends StatelessWidget {
         ),
         home: MultiProvider(providers: [
           ChangeNotifierProvider(create: (_) => PublicationListViewModel()),
-          ChangeNotifierProvider(create: (_) => UserListViewModel())
-        ], child: HomeScreen()));
+          ChangeNotifierProvider(create: (_) => UserListViewModel()),
+          ChangeNotifierProvider(create: (_) => SavePublicationListViewModel()),
+          ChangeNotifierProvider(
+              create: (_) => FavoritePublicationListViewModel())
+        ], child: FirstScreen()));
   }
 }

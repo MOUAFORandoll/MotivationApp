@@ -1,3 +1,4 @@
+import 'package:Motivation/ViewModels/FavoritePublications_list_view_model.dart';
 import 'package:Motivation/ViewModels/SavePublications_list_view_model.dart';
 import 'package:Motivation/components/motivationComponent.dart';
 import 'package:Motivation/styles/colorApp.dart';
@@ -6,15 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-class SavePublicationListScreen extends StatefulWidget {
-  const SavePublicationListScreen({Key? key}) : super(key: key);
+class FavoritePublicationListScreen extends StatefulWidget {
+  const FavoritePublicationListScreen({Key? key}) : super(key: key);
 
   @override
-  _SavePublicationListScreenState createState() =>
-      _SavePublicationListScreenState();
+  _FavoritePublicationListScreenState createState() =>
+      _FavoritePublicationListScreenState();
 }
 
-class _SavePublicationListScreenState extends State<SavePublicationListScreen> {
+class _FavoritePublicationListScreenState
+    extends State<FavoritePublicationListScreen> {
   void initState() {
     Provider.of<SavePublicationListViewModel>(context, listen: false)
         .getsavePub();
@@ -25,7 +27,7 @@ class _SavePublicationListScreenState extends State<SavePublicationListScreen> {
   @override
   Widget build(BuildContext context) {
     var _listPublicationSave =
-        Provider.of<SavePublicationListViewModel>(context);
+        Provider.of<FavoritePublicationListViewModel>(context);
 
     return Scaffold(
         body: SafeArea(
@@ -82,16 +84,16 @@ class _SavePublicationListScreenState extends State<SavePublicationListScreen> {
           children: [
             Container(
               margin: EdgeInsets.only(left: 10, right: 10, top: 8),
-              child: _listPublicationSave.loadingStatusSave ==
-                      LoadingStatusSave.comppleted
+              child: _listPublicationSave.loadingStatusFavorite ==
+                      LoadingStatusFavorite.comppleted
                   ? Column(
                       children: [
                         StreamBuilder(
-                            initialData: _listPublicationSave.listSavePub,
+                            initialData: _listPublicationSave.listFavoritePub,
                             stream: Stream.periodic(Duration(seconds: 5))
                                 .asBroadcastStream()
                                 .asyncMap(
-                                    (i) => _listPublicationSave.listSavePub),
+                                    (i) => _listPublicationSave.listFavoritePub),
                             builder: (BuildContext context,
                                 AsyncSnapshot<dynamic> snapshot) {
                               return ListView.builder(
@@ -109,8 +111,8 @@ class _SavePublicationListScreenState extends State<SavePublicationListScreen> {
                             })
                       ],
                     )
-                  : _listPublicationSave.loadingStatusSave ==
-                          LoadingStatusSave.searching
+                  : _listPublicationSave.loadingStatusFavorite ==
+                          LoadingStatusFavorite.searching
                       ? Center(
                           child: SpinKitCircle(
                           color: Colors.blue,

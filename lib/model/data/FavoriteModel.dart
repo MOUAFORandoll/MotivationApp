@@ -1,14 +1,14 @@
-class SaveModel {
+class FavoriteModel {
   int? id;
-  String? dateSave;
+  String? dateFavorite;
   Publication? publication;
   User? user;
 
-  SaveModel({this.id, this.dateSave, this.publication, this.user});
+  FavoriteModel({this.id, this.dateFavorite, this.publication, this.user});
 
-  SaveModel.fromJson(Map<String, dynamic> json) {
+  FavoriteModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    dateSave = json['dateSave'];
+    dateFavorite = json['dateFavorite'];
     publication = json['publication'] != null
         ? new Publication.fromJson(json['publication'])
         : null;
@@ -18,7 +18,7 @@ class SaveModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['dateSave'] = this.dateSave;
+    data['dateFavorite'] = this.dateFavorite;
     if (this.publication != null) {
       data['publication'] = this.publication!.toJson();
     }

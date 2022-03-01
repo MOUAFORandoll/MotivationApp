@@ -4,8 +4,35 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({Key? key}) : super(key: key);
-
+  SettingScreen({Key? key}) : super(key: key);
+  var listChild = [
+    {"title": "Save", "action": () => print("Save"), "icon": Icons.file_upload},
+    {
+      "title": "Confidentialites ",
+      "action": () => print("Confidentialites"),
+      "icon": Icons.add
+    },
+    {
+      "title": " Favorite",
+      "action": () => print("Securite"),
+      "icon": Icons.favorite_border
+    },
+    {
+      "title": "Apparence",
+      "action": () => print("Apparence"),
+      "icon": Icons.access_time_sharp
+    },
+    {
+      "title": "Langue",
+      "action": () => print("Langue"),
+      "icon": Icons.account_box
+    },
+    {
+      "title": " Securite",
+      "action": () => print("Securite"),
+      "icon": Icons.security
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,13 +96,15 @@ class SettingScreen extends StatelessWidget {
               )
             ],
           )),
-     Expanded(
-           /*    width: MediaQuery.of(context).size.width * .85,
+      Expanded(
+          /*    width: MediaQuery.of(context).size.width * .85,
               margin: EdgeInsets.only(top: 10), */
-              child: Column(
-                children: [ SettingBlocComponent(),
-          SettingBlocComponent(),  ],
-              )),
+          child: Column(
+        children: [
+          SettingBlocComponent(listChild: listChild),
+          // SettingBlocComponent(),
+        ],
+      )),
     ])));
   }
 }

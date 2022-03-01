@@ -2,8 +2,8 @@ import 'package:Motivation/styles/colorApp.dart';
 import 'package:flutter/material.dart';
 
 class SettingBlocComponent extends StatelessWidget {
-  const SettingBlocComponent({this.listChild});
-  final listChild;
+  SettingBlocComponent({required this.listChild});
+  final List listChild;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,14 +16,17 @@ class SettingBlocComponent extends StatelessWidget {
       child: (ListView.separated(
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            return BlocBtnComponent();
+            return BlocBtnComponent(
+                icon: listChild[index]['icon'],
+                title: listChild[index]['title'],
+                onTap: listChild[index]['action']);
           },
           separatorBuilder: (BuildContext context, int index) {
             return Divider(
               height: 2,
             );
           },
-          itemCount: 2)),
+          itemCount: listChild.length)),
     );
   }
 }
@@ -39,11 +42,11 @@ class BlocBtnComponent extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Row(children: [
               IconButton(
-                  icon: Icon(Icons.add, size: 25, color: ColorsApp.skyBlue),
+                  icon: Icon(icon, size: 25, color: ColorsApp.skyBlue),
                   onPressed: () {
                     /*   Navigator.of(context).pop(); */
                   }),
-              Text("dsfdaffasd")
+              Text(title)
             ]),
             Container(
               child: Icon(

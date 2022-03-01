@@ -152,18 +152,35 @@ class _MotivationComponentState extends State<MotivationComponent> {
                                                     setState(() {
                                                       save = true;
                                                     });
+
                                                     try {
-                                                      var postResponse =
-                                                          await ApiService()
-                                                              .postData(
-                                                                  "/api/saves",
-                                                                  data);
-                                                      print(
-                                                          "voila dat -------------------------$postResponse ");
-                                                      toastShow(
-                                                          "Enregistrement Reusssit",
-                                                          Colors.blueGrey,
-                                                          context);
+                                                      var verifexistSave =
+                                                          await ApiService.getExist(
+                                                              "/api/saves?user=1&publication=${widget.motivation!.id}",
+                                                              context);
+                                                      if (verifexistSave == 0) {
+                                                        var postResponse =
+                                                            await ApiService()
+                                                                .postData(
+                                                                    "/api/saves",
+                                                                    data);
+                                                        print(
+                                                            "voila dat -------------------------$postResponse ");
+                                                        toastShow(
+                                                            "Enregistrement Reusssit",
+                                                            Colors.blueGrey,
+                                                            context);
+                                                      }
+                                                      if (verifexistSave == 1) {
+                                                        toastShow(
+                                                            "Vous avez deja enregistre cette motivation",
+                                                            Colors.red,
+                                                            context);
+                                                        setState(() {
+                                                          save = false;
+                                                        });
+                                                      }
+
                                                       Navigator.pop(context);
                                                       setState(() {
                                                         save = false;
@@ -204,17 +221,32 @@ class _MotivationComponentState extends State<MotivationComponent> {
                                                     favory = true;
                                                   });
                                                   try {
-                                                    var postResponse =
-                                                        await ApiService()
-                                                            .postData(
-                                                                "/api/favories",
-                                                                data);
-                                                    print(
-                                                        "voila dat -------------------------$postResponse ");
-                                                    toastShow(
-                                                        "Ajout aux favory Reusssit",
-                                                        Colors.blueGrey,
-                                                        context);
+                                                    var verifexistFavory =
+                                                        await ApiService.getExist(
+                                                            "/api/favories?user=1&publication=${widget.motivation!.id}",
+                                                            context);
+                                                    if (verifexistFavory == 0) {
+                                                      var postResponse =
+                                                          await ApiService()
+                                                              .postData(
+                                                                  "/api/favories",
+                                                                  data);
+                                                      print(
+                                                          "voila dat -------------------------$postResponse ");
+                                                      toastShow(
+                                                          "Ajout aux favory Reusssit",
+                                                          Colors.blueGrey,
+                                                          context);
+                                                    }
+                                                    if (verifexistFavory == 1) {
+                                                      toastShow(
+                                                          "Vous avez deja enregistre cette motivation",
+                                                          Colors.red,
+                                                          context);
+                                                      setState(() {
+                                                        save = false;
+                                                      });
+                                                    }
                                                     Navigator.pop(context);
                                                     setState(() {
                                                       favory = false;
@@ -346,9 +378,7 @@ class _MotivationComponentState extends State<MotivationComponent> {
                               "/api/publications/${widget.motivation!.id}"
                         };
                         print("comenrenrne $data");
-                        setState(() {
-                          validator = true;
-                        });
+
                         try {
                           newComment.clear();
                           var postResponse =
@@ -356,14 +386,8 @@ class _MotivationComponentState extends State<MotivationComponent> {
                           print(
                               "voila dat -------------------------$postResponse ");
                           toastShow("Vous avez Like", Colors.blueGrey, context);
-                          setState(() {
-                            validator = false;
-                          });
                         } catch (e) {
                           toastShow("Erreur de Like", Colors.blueGrey, context);
-                          setState(() {
-                            validator = false;
-                          });
                         }
                       }),
                   InkWell(
@@ -448,7 +472,7 @@ class _MotivationComponentState extends State<MotivationComponent> {
                                                     child: Column(children: [
                                                   Container(
                                                       padding: EdgeInsets.only(
-                                                          left: 15, right: 10),
+                                                          left: 20, right: 10),
                                                       child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -509,7 +533,11 @@ class _MotivationComponentState extends State<MotivationComponent> {
                                                                                 .comppleted
                                                                         ? InkWell(
                                                                             child: Container(
-                                                                                decoration: BoxDecoration(color: Color(0xFFD9D9E0), border: Border.all(color: Colors.grey)),
+                                                                                decoration: BoxDecoration(
+                                                                                  color: Color(0xFF5A7E6C),
+                                                                                  border: Border.all(color: Colors.grey),
+                                                                                  borderRadius: BorderRadius.circular(5),
+                                                                                ),
                                                                                 width: MediaQuery.of(context).size.width * .3,
                                                                                 /*   height:
                                             MediaQuery.of(context).size.height *
@@ -554,7 +582,7 @@ class _MotivationComponentState extends State<MotivationComponent> {
                                                                                       margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.02),
                                                                                       child: Icon(
                                                                                         FontAwesomeIcons.arrowRight,
-                                                                                        color: Color(0xFFC0C0CA),
+                                                                                        color: Color(0xFF6161F8),
                                                                                       )),
                                                                                 )),
                                                                           )

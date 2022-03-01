@@ -1,18 +1,29 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 
-class ColorSelect extends StatelessWidget {
-  const ColorSelect({this.currentColor});
-  final int ? currentColor;
+class ColorSelect extends StatefulWidget {
+  ColorSelect({this.currentColor, this.value});
+  final int? currentColor;
+  var value;
 
+  @override
+  _ColorSelectState createState() => _ColorSelectState();
+}
+
+class _ColorSelectState extends State<ColorSelect> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
         child: Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(color: Color(currentColor!))),
+            margin: EdgeInsets.all(5),
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(color: Color(widget.currentColor!))),
         onTap: () {
-          print("${currentColor}");
+          setState(() {
+            widget.value = widget.currentColor;
+          });
+          print("${widget.currentColor}");
         });
   }
 }
+ */

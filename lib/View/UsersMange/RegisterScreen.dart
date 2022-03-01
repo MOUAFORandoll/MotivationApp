@@ -17,6 +17,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController name = TextEditingController();
+  TextEditingController surname = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController pass = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -31,6 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool validator = false;
   bool validator2 = false;
 
+  bool enabled = false;
   bool enableD = true;
   bool loading = false;
   /* 
@@ -59,26 +61,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
           child: Container(
+              alignment: Alignment.center,
               transformAlignment: AlignmentDirectional.centerStart,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  alignment: Alignment.bottomRight,
-                  image: AssetImage('Img/bg-object.png'),
-                ),
-              ),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     SizedBox(height: 15),
-                    Container(
-                        child: Image.asset(
-                      'Img/logoRM.png',
-                      height: 100,
-                      width: 100,
-                    )),
                     SizedBox(height: 15),
                     Container(
                       padding: EdgeInsets.only(left: 20, right: 20),
@@ -144,9 +135,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   nom = "";
                                 });
                               }
-                              /*   setState(() {
-                        telephone = int.parse(value);
-                      }); */
+                              if ((name.text.isNotEmpty &&
+                                  surname.text.isNotEmpty &&
+                                  email.text.contains(RegExp(
+                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")) &&
+                                  phone.text.isNotEmpty &&
+                                  pass.text.isNotEmpty &&
+                                  (RegExp(r'^(0|[1-9]\d*)$')
+                                          .hasMatch(phone.text) &&
+                                      phone.text.length == 9))) {
+                                setState(() {
+                                  enabled = true;
+                                });
+                                print("access");
+                              } else {
+                                setState(() {
+                                  enabled = false;
+                                });
+                                print("eroorrrrrrrrr");
+                              }
                             },
                             onFieldSubmitted: (String value) {},
                             controller: name,
@@ -171,6 +178,98 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   right: 15,
                                 ),
                                 hintText: "Nom",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                // errorText: error ? "this field is required" : null,
+                                prefixIcon: Icon(Icons.account_box)),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Prenom d'utilisateur",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Text(
+                                  nom,
+                                  style: TextStyle(
+                                    fontFamily: 'orkney',
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.03,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ]),
+                          TextFormField(
+                            enabled: enableD,
+                            onChanged: (String value) {
+                              error = false;
+
+                              if (value.isEmpty) {
+                                setState(() {
+                                  nom = "";
+                                });
+                              }
+                              if (value.length < 3 || name.text.length < 3) {
+                                setState(() {
+                                  nom = "Minimun 3 caracteres";
+                                });
+                              } else {
+                                setState(() {
+                                  nom = "";
+                                });
+                              }
+                              if ((name.text.isNotEmpty &&
+                                  surname.text.isNotEmpty &&
+                                  email.text.contains(RegExp(
+                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")) &&
+                                  phone.text.isNotEmpty &&
+                                  pass.text.isNotEmpty &&
+                                  (RegExp(r'^(0|[1-9]\d*)$')
+                                          .hasMatch(phone.text) &&
+                                      phone.text.length == 9))) {
+                                setState(() {
+                                  enabled = true;
+                                });
+                                print("access");
+                              } else {
+                                setState(() {
+                                  enabled = false;
+                                });
+                                print("eroorrrrrrrrr");
+                              }
+                            },
+                            onFieldSubmitted: (String value) {},
+                            controller: surname,
+                            validator: (value) {
+                              return value!.isEmpty
+                                  ? "veillez remplir se champs"
+                                  : null;
+                            },
+                            decoration: new InputDecoration(
+                                counterText: "",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(3),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    // width: 10
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.only(
+                                  left: 15,
+                                  bottom: 11,
+                                  top: 15,
+                                  right: 15,
+                                ),
+                                hintText: "Prenom",
                                 hintStyle: TextStyle(
                                   color: Colors.grey,
                                 ),
@@ -220,9 +319,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   phoneSa = "";
                                 });
                               }
-                              setState(() {
-                                // telephone = int.parse(value);
-                              });
+                              if ((name.text.isNotEmpty &&
+                                  surname.text.isNotEmpty &&
+                                  email.text.contains(RegExp(
+                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")) &&
+                                  phone.text.isNotEmpty &&
+                                  pass.text.isNotEmpty &&
+                                  (RegExp(r'^(0|[1-9]\d*)$')
+                                          .hasMatch(phone.text) &&
+                                      phone.text.length == 9))) {
+                                setState(() {
+                                  enabled = true;
+                                });
+                                print("access");
+                              } else {
+                                setState(() {
+                                  enabled = false;
+                                });
+                                print("eroorrrrrrrrr");
+                              }
                             },
                             onFieldSubmitted: (String value) {
                               setState(() {
@@ -330,6 +445,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   });
                                 }
                               }
+                              if ((name.text.isNotEmpty &&
+                                  surname.text.isNotEmpty &&
+                                  email.text.contains(RegExp(
+                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")) &&
+                                  phone.text.isNotEmpty &&
+                                  pass.text.isNotEmpty &&
+                                  (RegExp(r'^(0|[1-9]\d*)$')
+                                          .hasMatch(phone.text) &&
+                                      phone.text.length == 9))) {
+                                setState(() {
+                                  enabled = true;
+                                });
+                                print("access");
+                              } else {
+                                setState(() {
+                                  enabled = false;
+                                });
+                                print("eroorrrrrrrrr");
+                              }
                             },
                           ),
                           SizedBox(
@@ -386,6 +520,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                                 print("DesaActivate ber *********");
                               }
+                              if ((name.text.isNotEmpty &&
+                                  surname.text.isNotEmpty &&
+                                  email.text.contains(RegExp(
+                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")) &&
+                                  phone.text.isNotEmpty &&
+                                  pass.text.isNotEmpty &&
+                                  (RegExp(r'^(0|[1-9]\d*)$')
+                                          .hasMatch(phone.text) &&
+                                      phone.text.length == 9))) {
+                                setState(() {
+                                  enabled = true;
+                                });
+                                print("access");
+                              } else {
+                                setState(() {
+                                  enabled = false;
+                                });
+                                print("eroorrrrrrrrr");
+                              }
                             },
                             onFieldSubmitted: (String value) {
                               setState(() {
@@ -432,16 +585,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               textColor: Colors.white,
                               itemColor: ColorsApp.skyBlue,
                               loaderColor: Colors.white,
-                              enabled: (phone.text.isNotEmpty &&
-                                      pass.text.isNotEmpty &&
-                                      (RegExp(r'^(0|[1-9]\d*)$')
-                                              .hasMatch(phone.text) &&
-                                          phone.text.length == 9) &&
-                                      (pass.text.length == 5) &&
-                                      (email.text.contains(RegExp(
-                                          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$"))))
-                                  ? true
-                                  : false,
+                              enabled: enabled,
                               state: validator,
                               onTap: () async {
                                 print("deb");

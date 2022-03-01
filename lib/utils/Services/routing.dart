@@ -1,7 +1,7 @@
 import 'package:Motivation/View/AboutUsScreen.dart';
 import 'package:Motivation/View/Category/PublicationsByCategory.dart';
-import 'package:Motivation/View/HomeScreen.dart';
-import 'package:Motivation/View/Publications/AddPublicationsScreen.dart';
+import 'package:Motivation/View/FirstScreen.dart';
+import 'package:Motivation/View/Publications/FavoritePublicationsScreen.dart';
 import 'package:Motivation/View/Publications/SavingPublicationsList.dart';
 import 'package:Motivation/View/UsersMange/LoginScreen.dart';
 import 'package:Motivation/View/UsersMange/RegisterScreen.dart';
