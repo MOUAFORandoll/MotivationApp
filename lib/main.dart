@@ -1,6 +1,7 @@
 import 'package:Motivation/View/FirstScreen.dart';
 import 'package:Motivation/View/UsersMange/LoginScreen.dart';
 import 'package:Motivation/View/UsersMange/RegisterScreen.dart';
+import 'package:Motivation/ViewModels/Category_list_view_model.dart';
 import 'package:Motivation/ViewModels/Favoritepublications_list_view_model.dart';
 import 'package:Motivation/ViewModels/SavePublications_list_view_model.dart';
 import 'package:Motivation/viewmodels/publications_list_view_model.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => PublicationListViewModel()),
           ChangeNotifierProvider(create: (_) => UserListViewModel()),
           ChangeNotifierProvider(create: (_) => SavePublicationListViewModel()),
+          ChangeNotifierProvider(create: (_) => CategorieListViewModel()),
           ChangeNotifierProvider(
               create: (_) => FavoritePublicationListViewModel())
         ], child: FirstScreen()));

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:Motivation/ViewModels/Category_list_view_model.dart';
 import 'package:Motivation/components/button.dart';
 import 'package:Motivation/components/colorSelect.dart';
 import 'package:Motivation/components/motivationComponent.dart';
@@ -10,6 +13,8 @@ import 'package:Motivation/viewmodels/users_list_view_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,6 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController newPub = TextEditingController();
 
   String selectedValue = "/api/type_publications/1";
+
+  String category = "/api/categories/1";
   int couleur = 0xFFFFFFFF;
   addMotivation(context) {
     return showModalBottomSheet(
@@ -98,6 +105,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         onPressed: () {
+                                          mystate(() {
+                                            selectedValue =
+                                                "/api/type_publications/1";
+
+                                            category = "/api/categories/1";
+                                          });
                                           Navigator.of(context).pop();
                                         }),
                                   ])),
@@ -242,8 +255,297 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ])
                                             : (selectedValue ==
                                                     "/api/type_publications/2")
-                                                ? Text("Not implement Image")
+                                                ? Column(children: [
+                                                    Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                bottom: 6),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                            "Select the picture")),
+                                                    /*     Padding(
+        padding: const EdgeInsets.all(8.0),
+        child:  GridView.builder(
+                                                        gridDelegate:
+                                                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                                maxCrossAxisExtent:
+                                                                    200,
+                                                                childAspectRatio:
+                                                                    3 / 2,
+                                                                crossAxisSpacing:
+                                                                    20,
+                                                                mainAxisSpacing:
+                                                                    20),
+                                                        itemCount:
+                                                           10,
+                                                        itemBuilder:
+                                                            (BuildContext ctx,
+                                                                index) {
+                                                          return Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Text(
+                                                               "name"),
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .amber,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15)),
+                                                          );
+                                                        }) ),*/
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    right: 5,
+                                                                    left: 5),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              imageUrl: "",
+                                                              imageBuilder:
+                                                                  (context,
+                                                                      imageProvider) {
+                                                                return Container(
+                                                                  height: 150,
+                                                                  width: 150,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    /*  color: ColorsApp.pink, */
+                                                                    /*   borderRadius: BorderRadius.circular(10), */
+                                                                    image: DecorationImage(
+                                                                        image:
+                                                                            imageProvider,
+                                                                        fit: BoxFit
+                                                                            .cover),
+                                                                    border: Border.all(
+                                                                        width:
+                                                                            0.2,
+                                                                        color: Colors
+                                                                            .grey),
+                                                                  ),
+                                                                );
+                                                              },
+                                                              placeholder:
+                                                                  (context,
+                                                                      url) {
+                                                                return Container(
+                                                                    height: 150,
+                                                                    width: 150,
+                                                                    decoration: BoxDecoration(
+                                                                        border: Border.all(
+                                                                            width:
+                                                                                0.2,
+                                                                            color: Colors
+                                                                                .grey)),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(
+                                                                        color: ColorsApp
+                                                                            .skyBlue,
+                                                                      ),
+                                                                    ));
+                                                              },
+                                                              errorWidget:
+                                                                  (context, url,
+                                                                      error) {
+                                                                return Container(
+                                                                  decoration: BoxDecoration(
+                                                                      border: Border.all(
+                                                                          width:
+                                                                              0.2,
+                                                                          color:
+                                                                              Colors.grey)),
+                                                                  height: 150,
+                                                                  width: 150,
+                                                                  child: Icon(
+                                                                    Icons.error,
+                                                                    color: Colors
+                                                                        .red,
+                                                                  ),
+                                                                );
+                                                              },
+                                                            )),
+                                                        Container(
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(
+                                                                    width: 0.2,
+                                                                    color: Colors
+                                                                        .grey)),
+                                                            height: 150,
+                                                            width: 150,
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    bottom: 30,
+                                                                    top: 20),
+                                                            child: InkWell(
+                                                              child: Icon(
+                                                                  Icons.add),
+                                                              onTap: () async {
+                                                                File image = await ImagePicker.pickImage(
+                                                                    source: ImageSource
+                                                                        .gallery,
+                                                                    maxHeight:
+                                                                        double
+                                                                            .infinity,
+                                                                    maxWidth: double
+                                                                        .infinity,
+                                                                    imageQuality:
+                                                                        100);
+                                                                /*  setState(() {
+                                                    if (!images.path
+                                                        .contains(image.path)) {
+                                                      images = image;
+                                                      print(images.path);
+                                                    }
+                                                  }); */
+                                                                if (image.path
+                                                                    .isEmpty) {
+                                                                  print(
+                                                                      "required image");
+                                                                }
+                                                              },
+                                                            )),
+                                                      ],
+                                                    )
+                                                  ])
                                                 : Text("Not implement Video"),
+                                        Container(
+                                            padding: EdgeInsets.only(
+                                                bottom: 30, top: 20),
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                      "Select The Category of your motivation"),
+                                                  InkWell(
+                                                      child: Text("Select"),
+                                                      onTap: () {
+                                                        print(
+                                                            "Ici on doit afficher un carre qui continet des couleur");
+                                                        showModalBottomSheet(
+                                                            barrierColor:
+                                                                Colors.grey,
+                                                            context: context,
+                                                            isScrollControlled:
+                                                                true,
+                                                            builder: (BuildContext context) => SafeArea(
+                                                                child: StatefulBuilder(
+                                                                    builder: (BuildContext context, StateSetter mystate) => Container(
+                                                                        height: MediaQuery.of(context).size.height / 1.3,
+                                                                        child: SafeArea(
+                                                                            child: Column(children: [
+                                                                          Container(
+                                                                              padding: EdgeInsets.only(left: 20, right: 10),
+                                                                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                                                                Text(
+                                                                                  "Selectiooner un cathegorie",
+                                                                                  textAlign: TextAlign.left,
+                                                                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                                                                ),
+                                                                                TextButton(
+                                                                                    child: Text(
+                                                                                      "Annuler",
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 15, color: ColorsApp.skyBlue, fontWeight: FontWeight.bold),
+                                                                                    ),
+                                                                                    onPressed: () {
+                                                                                      Navigator.of(context).pop();
+                                                                                    }),
+                                                                              ])),
+                                                                          Expanded(
+                                                                              child: Container(
+                                                                                  padding: EdgeInsets.only(left: 15, right: 15),
+                                                                                  child: Column(children: [
+                                                                                    (ListView.separated(
+                                                                                      shrinkWrap: true,
+                                                                                      physics: ClampingScrollPhysics(),
+                                                                                      itemBuilder: (BuildContext context, int index) {
+                                                                                        return _listCategorie.loadingStatusCategory == LoadingStatusCategory.comppleted
+                                                                                            ? InkWell(
+                                                                                                child: Container(
+                                                                                                    decoration: BoxDecoration(
+                                                                                                      color: Color(0xFF5A7E6C),
+                                                                                                      border: Border.all(color: Colors.grey),
+                                                                                                      borderRadius: BorderRadius.circular(5),
+                                                                                                    ),
+                                                                                                    width: MediaQuery.of(context).size.width * .3,
+                                                                                                    /*   height:
+                                            MediaQuery.of(context).size.height *
+                                                0.08, */
+                                                                                                    padding: EdgeInsets.only(left: 5, right: 5 /* , top: 3*/),
+                                                                                                    margin: EdgeInsets.only(left: 5, right: 5, top: 3),
+                                                                                                    child: ListTile(
+                                                                                                      /*     leading: Container(
+                                                                                margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.015),
+                                                                                child: CachedNetworkImage(
+                                                                                  imageUrl: (_listMembres[index].image != null) ? ApiUrl.baseUrl + _listMembres[index].image!.contentUrl : "",
+                                                                                  imageBuilder: (context, imageProvider) {
+                                                                                    return CircleAvatar(
+                                                                                        /*   backgroundColor: ColorsApp.skyBlue, */
+
+                                                                                        radius: 25,
+                                                                                        backgroundImage: imageProvider);
+                                                                                  },
+                                                                                  placeholder: (context, url) {
+                                                                                    return CircleAvatar(
+                                                                                        /*  backgroundColor: ColorsApp.skyBlue, */
+                                                                                        radius: 25,
+                                                                                        child: Center(
+                                                                                          child: CircularProgressIndicator(
+                                                                                            color: ColorsApp.skyBlue,
+                                                                                          ),
+                                                                                        ));
+                                                                                  },
+                                                                                  errorWidget: (context, url, error) {
+                                                                                    return CircleAvatar(
+                                                                                        /*  backgroundColor: ColorsApp.skyBlue, */
+                                                                                        radius: 25,
+                                                                                        backgroundImage: AssetImage("Img/happy.png"));
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                             */
+                                                                                                      onTap: () {
+                                                                                                        setState(() {
+                                                                                                          category = "/api/categories/${_listCategorie.listCategory[index].id}";
+                                                                                                        });
+                                                                                                        Navigator.pop(context);
+                                                                                                      },
+                                                                                                      title: Text("${_listCategorie.listCategory[index].libelle}  "),
+                                                                                                      trailing: Container(
+                                                                                                          margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.02),
+                                                                                                          child: Icon(
+                                                                                                            FontAwesomeIcons.arrowRight,
+                                                                                                            color: Color(0xFF6161F8),
+                                                                                                          )),
+                                                                                                    )),
+                                                                                              )
+                                                                                            : _listCategorie.loadingStatusCategory == LoadingStatusCategory.searching
+                                                                                                ? Center(
+                                                                                                    child: SpinKitCircle(
+                                                                                                    color: Colors.blue,
+                                                                                                    size: 40,
+                                                                                                  ))
+                                                                                                : Container(padding: EdgeInsets.only(top: 7, left: 10, right: 10, bottom: 7), child: Text("Aucun Utilisateur disponible"));
+                                                                                      },
+                                                                                      separatorBuilder: (BuildContext context, int index) {
+                                                                                        return SizedBox(
+                                                                                          height: 0,
+                                                                                        );
+                                                                                      },
+                                                                                      itemCount: _listCategorie.listCategory.length,
+                                                                                    ))
+                                                                                  ])))
+                                                                        ]))))));
+                                                      })
+                                                ])),
                                         Container(
                                             padding: EdgeInsets.only(top: 7),
                                             child: Button(
@@ -263,7 +565,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     "user": "/api/users/1",
                                                     "typePublication":
                                                         selectedValue,
-                                                    "fontColor":   couleur.toString()
+                                                    "fontColor":
+                                                        couleur.toString(),
+                                                    "category": category
                                                   };
                                                   mystate(() {
                                                     validator = true;
@@ -308,14 +612,19 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     Provider.of<PublicationListViewModel>(context, listen: false).getAllPub();
     Provider.of<UserListViewModel>(context, listen: false).getAllUser();
+
+    Provider.of<CategorieListViewModel>(context, listen: false)
+        .getAllCategories();
     // TODO: implement initState
     super.initState();
   }
 
+  var _listCategorie;
   @override
   Widget build(BuildContext context) {
     var _listPublication = Provider.of<PublicationListViewModel>(context);
 
+    _listCategorie = Provider.of<CategorieListViewModel>(context);
     return Scaffold(
         body: SafeArea(
             child: Column(children: [
@@ -448,7 +757,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   physics: NeverScrollableScrollPhysics(),
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (BuildContext context, index) {
-                                  
                                     return GestureDetector(
                                         onLongPress: () {},
                                         onTap: () async {},

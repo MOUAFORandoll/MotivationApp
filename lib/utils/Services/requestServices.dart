@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:Motivation/model/data/AbonnementModel.dart';
+import 'package:Motivation/model/data/CategorieModel.dart';
 import 'package:Motivation/model/data/CommentModel%20.dart';
 import 'package:Motivation/model/data/LikeModel.dart';
 import 'package:Motivation/model/data/MessageModel.dart';
@@ -104,6 +105,26 @@ class ApiService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         responseWModel = (response.data as List)
             .map((e) => PublicationModel.fromJson(e))
+            .toList();
+      } else {
+        responseWModel = [];
+      }
+
+      return responseWModel;
+    } on SocketException {
+      throw Exception("No Internet Connexion");
+    }
+  }
+
+  static getAllCategories() async {
+    // var dio = await CustomDio().getApiClient();
+
+    try {
+      List<CategorieModel> responseWModel;
+      Response response = await dio.get("/api/categories");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        responseWModel = (response.data as List)
+            .map((e) => CategorieModel.fromJson(e))
             .toList();
       } else {
         responseWModel = [];
